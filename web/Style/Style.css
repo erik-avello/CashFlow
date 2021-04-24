@@ -1,0 +1,27 @@
+#container .left,
+#container .right {
+    display: inline-block;
+}
+
+#container .left {
+    width: 50%;
+    float: left;
+}
+#container .right {
+    width: 50%;
+    float: right;
+}
+
+#Subcontainer .left,
+#Subcontainer .right {
+    display: inline-block;
+}
+
+#Subcontainer .left {
+    width: 50%;
+    float: left;
+}
+#Subcontainer .right {
+    width: 50%;
+    float: right;
+}
