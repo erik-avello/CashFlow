@@ -4,6 +4,7 @@ import dao.DAO_Accion;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -29,11 +30,13 @@ public class registroServlet extends HttpServlet {
             int idFlujo = Integer.parseInt(request.getParameter("idFlujo"));
             int idTipo = Integer.parseInt(request.getParameter("idTipo"));
             
+            
             try {
-                int idAccion = new DAO_Accion().insertAccion(accion, idFlujo , idTipo);
+                System.out.println("");
+                //int idAccion = new DAO_Accion().insertAccion(accion, idFlujo , idTipo);
                 //idAccion se retorna
                 
-            } catch (ClassNotFoundException | SQLException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(registroServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             

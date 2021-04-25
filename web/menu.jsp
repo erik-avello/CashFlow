@@ -27,6 +27,7 @@
     //int idFlujoRequest = Integer.parseInt(request.getParameter("idFlujo"));
     //Flujo flujo = dao_flujo.getFlujo(idFlujoRequest);
     int idFlujo = 1;
+    int idTipo = 1;
 
     int mesInicial = -1;
     int acumulador = 1;
@@ -242,14 +243,14 @@
             });
             let datos = [];
             document.querySelectorAll('#tablaFinanzas thead tr').forEach(fila => {
-                
+
                 let dato = {};
                 atributos.forEach(campo => {
                     dato[campo] = '';
                 });
                 fila.querySelectorAll('td').forEach((elemento, n) => {
                     let input = elemento.querySelector('input');
-                    
+
                     if (input !== null) {
                         dato[atributos[n]] = input.value;
                     } else {
@@ -258,7 +259,29 @@
                 });
                 datos.push(dato);
             });
-            console.log(datos);
+
+
+
+            for (var i = 1; i < datos.length; i++) {
+             console.log(datos[i]);
+             console.log(atributos[i]);
+             console.log(typeof(datos));
+             }
+
+           
+
+            /*$.ajax({
+             url: "/registroAccion.do",
+             method: "POST",
+             data: {
+             datos: datos,
+             "idTipo": <%= idTipo%>,
+             "idFlujo": <%= idFlujo%>
+             }
+             }).done(function (response) {
+             //Aquí te devuelve el OK o KO dependiendo de lo que hagas en PHP
+             });*/
+
         }
 
         $(document).on('click', 'input', function () {
