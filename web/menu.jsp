@@ -236,190 +236,34 @@
         }
 
         function guardarCambios() {
-            var listaTH = new Array();
-            var listaAccion = new Array();
-            var listaValoresTd = new Array();
-
-            var accion = "";
-            var valores = "";
-            var contCol = 0;
-            var contFil = 0;
-            var nColumnasPARACONTADOR = $("#tablaFinanzas tr:last td").length;
-            var nFilasTabla = $("#tablaFinanzas tr").length;
-
-
-            $('#tablaFinanzas tr:first th').each(function () {
-                var value = $(this).text();
-                listaTH.push(value);
+            let atributos = [];
+            document.querySelectorAll('#tablaFinanzas thead th').forEach(elemento => {
+                atributos.push(elemento.innerText);
             });
-
-            /*$("#tablaFinanzas tr").find('td:eq(0)').each(function () {
-             var value = $(this).find('input[type="text"]').val();
-             listaAccion.push(value);
-             }); */
-
-            
-        /*$("#tablaFinanzas tr td").each(function (i) {
-                var value = $(this).find('input[type="text"]').val();
-                listaValoresTd.push(value);
-            });*/
-
-
-
-            /*
-             var resume_table = document.getElementById("tablaFinanzas");
-             
-             for (var i = 1, row ; row = resume_table.rows[i] ; i++) {
-             
-             for (var j = 1, col; col = row.cells[j] ; j++) {
-             
-             console.log("Texto: "+col.innerText);
-             console.log("Fila: "+i);
-             console.log("Columna: "+j);
-             }
-             }
-             
-             
-             /*
-             $('#tablaFinanzas tr').each(function (i) {
-             //valores = $(this).find('input[type="text"]').val();
-             valores = listaValoresTd[contFil];
-             accion = listaAccion[contFil];
-             var valorListaTH = listaTH[contCol];
-             
-             console.log("Valor TH: " + valorListaTH);
-             console.log("Accion: " + accion);
-             console.log("valor: "+ valores);
-             
-             if (accion !== undefined) {
-             
-             } else {
-             
-             }
-             
-             if (valorListaTH !== undefined) {
-             
-             } else {
-             
-             }
-             
-             if (contCol === nColumnasPARACONTADOR) {
-             contCol = 0;
-             }
-             if (contFil === nFilasTabla){
-             contFil = 0;
-             }
-             
-             contCol++;
-             contFil++;
-             });
-             */
-
-
-            var valores = "";
-
-            
-            $("#tablaFinanzas").parent("tr").find("td").each(function (i) {
-                if(i === nColumnasPARACONTADOR){
-                        i = 0;
-                }
-        
-                if (i > 0) {
-                    valores = $(this).find('input[type="text"]').val();
-                } else {
-                    valores = "";
-                }
+            let datos = [];
+            document.querySelectorAll('#tablaFinanzas thead tr').forEach(fila => {
                 
-                console.log("Contador ktm: "+i);
-                console.log("valores: "+valores);
-                
-                i++;
-                
-                
-            });
-
-
-
-            /*
-            $('#tablaFinanzas tr td').each(function (i) {
-
-                if (i > 0) {
-                    valores = $(this).find('input[type="text"]').val();
-                    alert(valores);
-                } else {
-                    valores = "";
-                }
-
-
-                var accion = $(this).find('input[type="text"]').eq(0).val();
-                listaAccion.push(accion);
-
-                //var accion = listaAccion[contFil];
-                var valorListaTH = listaTH[contCol];
-
-                var nombreTipo;
-                nombreTipo = listaTH[0];
-                //funcion que retorna el iddeltipo a traves del nombre
-
-                var idTipo = "";
-                if (nombreTipo === "Ingresos") {
-                    idTipo = 1;
-                } else {
-                    if (nombreTipo === "Egresos") {
-                        idTipo = 2;
+                let dato = {};
+                atributos.forEach(campo => {
+                    dato[campo] = '';
+                });
+                fila.querySelectorAll('td').forEach((elemento, n) => {
+                    let input = elemento.querySelector('input');
+                    
+                    if (input !== null) {
+                        dato[atributos[n]] = input.value;
+                    } else {
+                        dato[atributos[n]] = elemento.innerText;
                     }
-
-                }
-
-                //insert con este dato $(this).find('.cell:first-child').text();
-                //var idAccion = select maxid;
-                //var idAccion;
-
-                $.ajax({
-                 data: {
-                 accion: accion,
-                 idFlujo: <%= idFlujo%>,
-                 idTipo: idTipo
-                 },
-                 url: "registroAccion.do",
-                 type: 'POST',
-                 success: function (response) {
-                 console.log("Respuesta Ajax: " + response);
-                 var respuesta = (response);
-                 }
-                 }); 
-
-                if (contCol === nColumnasPARACONTADOR) {
-                    contCol = 0;
-                }
-
-                contCol++;
-                contFil++;
-            }); */
-
+                });
+                datos.push(dato);
+            });
+            console.log(datos);
         }
-
 
         $(document).on('click', 'input', function () {
             $(this).prop('readonly', false);
         });
-
-        var idMes = data.getmes(table.getelementbyid("thmes1"));
-        var nFilas2 = table.rows.length;
-        var nColumna2 = $("#tablaFinanzas tr:last td").length;
-        for (var f = 0; f < nFilas2; f++) {
-            var idAccion = 0;
-            for (var c = 0; c < nColumna2; c++) {
-                if (c == 0) {
-                    // var campoaccion1 = table.values(f,c);
-                    // insert into accion(null, ifflujo, campoaccion1);
-                    // idAccion = select max(id) from accion;
-                } else {
-                    //insert into tablaintermedia(null,idflujo,idaccion, idmes,var campoaccion1 = table.values(f,c));
-                }
-
-            }
-        }
     </script>
 
 </html>
