@@ -29,16 +29,22 @@ public class registroServlet extends HttpServlet {
             String accion = request.getParameter("accion");
             int idFlujo = Integer.parseInt(request.getParameter("idFlujo"));
             int idTipo = Integer.parseInt(request.getParameter("idTipo"));
+            String array [] = request.getParameterValues("datos");
             
-            
-            try {
-                System.out.println("");
-                //int idAccion = new DAO_Accion().insertAccion(accion, idFlujo , idTipo);
-                //idAccion se retorna
-                
-            } catch (Exception ex) {
-                Logger.getLogger(registroServlet.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("idFlujo: "+idFlujo);
+            System.out.println("idTipo: "+idTipo);
+            for (int i = 0; i < array.length; i++) {
+                System.out.println(array[i]);
             }
+            for(String elemento : array){
+                System.out.println("elemento array: "+elemento);
+            }
+            /*try {
+            //int idAccion = new DAO_Accion().insertAccion(accion, idFlujo , idTipo);
+            //idAccion se retorna
+            } catch (Exception ex) {
+            Logger.getLogger(registroServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
             
         }
     }

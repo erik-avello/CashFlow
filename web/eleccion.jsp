@@ -37,7 +37,7 @@
         <a href="cerrarSesion.do">Cerrar Sesion</a>
         <hr>
         
-        <a href="menu.jsp">Ver mis flujos</a>
-        <a href="#">Crear nuevo flujo</a>
+        <a href="finanzas.jsp">Ver mis flujos</a>
+        <a href="menu.jsp">Crear nuevo flujo</a>
     </body>
 </html>

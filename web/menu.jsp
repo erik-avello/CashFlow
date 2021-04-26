@@ -260,27 +260,23 @@
                 datos.push(dato);
             });
 
-
-
+            
             for (var i = 1; i < datos.length; i++) {
-             console.log(datos[i]);
-             console.log(atributos[i]);
-             console.log(typeof(datos));
-             }
+                console.log(datos[i]);
+                console.log(atributos[i]);
+            }
 
-           
-
-            /*$.ajax({
-             url: "/registroAccion.do",
-             method: "POST",
-             data: {
-             datos: datos,
-             "idTipo": <%= idTipo%>,
-             "idFlujo": <%= idFlujo%>
-             }
-             }).done(function (response) {
-             //Aquí te devuelve el OK o KO dependiendo de lo que hagas en PHP
-             });*/
+            $.ajax({
+                url: "registroAccion.do",
+                method: "POST",
+                data: {
+                    datos: JSON.stringify(datos),
+                    "idTipo": <%= idTipo%>,
+                    "idFlujo": <%= idFlujo%>
+                }
+            }).done(function (response) {
+            
+            });
 
         }
 
