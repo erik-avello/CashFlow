@@ -22,7 +22,7 @@ public class guardarDatosServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-            
+            System.out.println(request.getParameterValues("datos"));
         } catch (Exception e) {
         }
         

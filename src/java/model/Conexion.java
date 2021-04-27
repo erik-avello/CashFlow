@@ -13,13 +13,13 @@ public class Conexion {
 
     public Conexion(String bd) throws ClassNotFoundException, SQLException {
         String url = "jdbc:mysql://localhost/" + bd + "?user=root&password=";
-        System.out.println(url);
+        //System.out.println(url);
         Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection(url);
     }
 
     public ResultSet ejecutar(String query) throws SQLException {
-        System.out.println(query);
+        //System.out.println(query);
         sen = con.createStatement();
 
         if (

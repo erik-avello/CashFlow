@@ -22,19 +22,17 @@ public class DAO_Mes extends Conexion implements DAO<Mes>{
         super("bd_practica");
     }
     
-    public List<Mes> getMesPorId(int id) throws SQLException{
+    public Mes getMesPorId(int id) throws SQLException{
         ResultSet rs = ejecutar("SELECT * FROM MES WHERE id='"+id+"';");
         Mes m = null;
-        List<Mes> lista = new ArrayList<>();
         
-        while(rs.next()){
+        if(rs.next()){
             m = new Mes();
             m.setId(rs.getInt(1));
             m.setNombre(rs.getString(2));
-            lista.add(m);
             
         }
-        return lista;
+        return m;
     }
 
     @Override

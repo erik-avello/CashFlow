@@ -142,7 +142,6 @@
 
         var acumulador = 0;
         function agregarColumna(colCount) {
-            acumulador = acumulador + 1;
             var idMes = <%= lista.get(mesInicial + acumulador).getId()%>;
             var nombreMes = "nada";
             var idMes = idMes + acumulador;
@@ -195,8 +194,11 @@
                 case 12:
                     nombreMes = "Diciembre";
                     idMes = 12;
-                    acumulador = 0;
+                    acumulador = -1;
                     break;
+                default :
+                    nombreMes = "Enero";
+                    idMes = 1;
             }
 
             var table = document.getElementById("tablaFinanzas");
@@ -211,7 +213,9 @@
                 } else {
                     columna.append('<td><input type="text" readonly="true" class="form-control"></td>');
                 }
-            })
+            });
+            
+            acumulador = acumulador + 1;
         }
 
         function eliminarColumna() {
@@ -265,6 +269,8 @@
                 console.log(datos[i]);
                 console.log(atributos[i]);
             }
+            
+            <%  if(mesInicial == -1){mesInicial=1;}  %>
 
             $.ajax({
                 url: "registroAccion.do",
@@ -272,7 +278,8 @@
                 data: {
                     datos: JSON.stringify(datos),
                     "idTipo": <%= idTipo%>,
-                    "idFlujo": <%= idFlujo%>
+                    "idFlujo": <%= idFlujo%>,
+                    idPrimermes : <%= mesInicial %>
                 }
             }).done(function (response) {
             
