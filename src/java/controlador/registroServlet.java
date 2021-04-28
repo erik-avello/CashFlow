@@ -15,6 +15,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dao.DAO_Mes;
+import dao.DAO_RegistroTabla;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,14 +40,19 @@ public class registroServlet extends HttpServlet {
 
             String accion = request.getParameter("accion");
             int idFlujo = Integer.parseInt(request.getParameter("idFlujo"));
+            System.out.println("-------------------");
+            System.out.println(idFlujo);
+            System.out.println("-------------------");
             int idTipo = Integer.parseInt(request.getParameter("idTipo"));
+            System.out.println("-------------------");
+            System.out.println(idTipo);
+            System.out.println("-------------------");
             String loqueviene = request.getParameter("datos");
 
             try {
 
                 int mesInicial = Integer.parseInt(request.getParameter("idPrimermes"));
                 int contMes = 0;
-                Mes mes = new DAO_Mes().getMesPorId(mesInicial);
 
                 System.out.println("-----------------------------");
                 System.out.println("-----------------------------");
@@ -60,22 +66,46 @@ public class registroServlet extends HttpServlet {
 
                 for (int i = 1; i < array.size(); i++) {
                     System.out.println("siguiente objeto");
+                    //reinicio del contador para el idmes
                     contMes = mesInicial;
+
+                    //se rescata el jsonobject de la lista
                     JsonObject jsonObject = (JsonObject) array.get(i);
                     System.out.println(jsonObject);
                     System.out.println("-------------------------------------------");
 
                     for (int j = 1; j < jsonObject.size(); j++) {
-                        System.out.println(jsonObject.get("Ingresos"));
-                        System.out.println(new DAO_Mes().getMesPorId(contMes).getNombre());
-                        System.out.println(jsonObject.get(new DAO_Mes().getMesPorId(contMes).getNombre()));
+                        //nombre accion puede ser ya sea sueldo/bono/hierba/etc
+                        String nombreAccion = new Gson().toJson(jsonObject.get("Ingresos"));
+                        System.out.println(nombreAccion);
+
+                        //aqui vamos rescatando los meses por el id;
+                        //el id esta sacado por un contador el cual se reinicia al id inicial cada vez que se pasa
+                        //a un uevo objeto json
+                        Mes mes = new DAO_Mes().getMesPorId(contMes);
+                        System.out.println(mes.getNombre());
+
+                        //aqui rescatamos el dato que pertenece al mes
+                        //y ademas pertenece a la accion antes rescatada
+                        //es decir, el siguiente dato de la lista
+                        String dato = new Gson().toJson(jsonObject.get(mes.getNombre()));
+                        System.out.println(dato);
+                        
+                        
+                        
+                        //ej de insert
+                        //null, nombreAccion, mes.getid, dato
+                        new DAO_RegistroTabla().insertRegistros(String.valueOf(idFlujo), String.valueOf(idTipo), nombreAccion, mes.getId(), dato);
+                        
+                        
+                        
                         contMes++;
                     }
 
                 }
 
             } catch (ClassNotFoundException | SQLException ex) {
-                System.out.println("se cayo!!!!");
+                System.out.println("se cayo!!!!   "+ex.getLocalizedMessage());
             }
 
             /*try {

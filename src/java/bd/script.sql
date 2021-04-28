@@ -80,61 +80,17 @@ CREATE TABLE flujo(
     FOREIGN KEY (id_usuario_fk) references usuario (id),
     PRIMARY KEY (id)
 );
+insert into flujo values(null, 'flujo mio',now(), 1);
 
---Pruebas tabla Flujo
---INSERT INTO flujo VALUES(null, 'Flujo 1',NOW(),'1');
---SELECT * FROM FLUJO WHERE id_usuario_fk = (select id from usuario where id = 1);
 
-CREATE TABLE accion(
-    id INT AUTO_INCREMENT,
-    descripcion VARCHAR(100),
-    id_flujo_fk INT,
-    id_tipo_fk INT,
-    
-    FOREIGN KEY (id_flujo_fk) references flujo (id),
-    FOREIGN KEY (id_tipo_fk) references tipo (id),
-    PRIMARY KEY (id)
+CREATE TABLE registroDatosFlujo(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    idFlujo INT REFERENCES flujo(id),
+    idtipo INT REFERENCES tipo(id),
+    accion VARCHAR(30),
+    idMes INT REFERENCES MES(id),
+    dato VARCHAR(10)
 );
 
 
---Tabla accion se refiere a lo que es una celda, lo cual es el insert
---Recordar que este insert corresponde tanto a un flujo como a un tipo 
-
-CREATE TABLE total_accion(
-    id INT AUTO_INCREMENT,
-    total INT,
-    id_flujo_fk INT,
-    id_accion_fk INT,
-    
-    FOREIGN KEY (id_flujo_fk) references flujo (id),
-    FOREIGN KEY (id_accion_fk) references accion (id),
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE accion_mes(
-    id INT AUTO_INCREMENT,
-    dato INT,
-    id_mes_fk INT,
-    id_accion_fk INT,
-    id_flujo_fk INT,
-    
-    FOREIGN KEY (id_mes_fk) references mes (id),
-    FOREIGN KEY (id_flujo_fk) references flujo (id),
-    FOREIGN KEY (id_accion_fk) references accion (id),
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE total_mes(
-    id INT AUTO_INCREMENT,
-    total INT,
-    id_mes_fk INT,
-    id_flujo_fk INT,
-
-    FOREIGN KEY (id_mes_fk) references mes (id),
-    FOREIGN KEY (id_flujo_fk) references flujo (id),
-    PRIMARY KEY (id)
-);
-
-select * from mes
-select * from total_mes
-select * from accion
+-- select * from registroDatosFlujo;
