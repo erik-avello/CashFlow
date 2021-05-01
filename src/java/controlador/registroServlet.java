@@ -1,6 +1,6 @@
 package controlador;
 
-import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jdk.internal.util.xml.impl.ReaderUTF8;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -28,7 +29,7 @@ import model.MesDato;
 
 /**
  *
- * @author JOAQUIN
+ * @author ANON
  */
 @WebServlet(name = "registroServlet", urlPatterns = {"/registroAccion.do"})
 public class registroServlet extends HttpServlet {
@@ -77,6 +78,7 @@ public class registroServlet extends HttpServlet {
                     for (int j = 1; j < jsonObject.size(); j++) {
                         //nombre accion puede ser ya sea sueldo/bono/hierba/etc
                         String nombreAccion = new Gson().toJson(jsonObject.get("Ingresos"));
+                        String nombreAccionReplace = nombreAccion.replaceAll("^[\"']+|[\"']+$", "");
                         System.out.println(nombreAccion);
 
                         //aqui vamos rescatando los meses por el id;
@@ -89,16 +91,16 @@ public class registroServlet extends HttpServlet {
                         //y ademas pertenece a la accion antes rescatada
                         //es decir, el siguiente dato de la lista
                         String dato = new Gson().toJson(jsonObject.get(mes.getNombre()));
-                        System.out.println(dato);
+                        
+                        String result = dato.replaceAll("^[\"']+|[\"']+$", "");
+                        
+                        System.out.println(result);
                         
                         
                         
                         //ej de insert
                         //null, nombreAccion, mes.getid, dato
-                        new DAO_RegistroTabla().insertRegistros(String.valueOf(idFlujo), String.valueOf(idTipo), nombreAccion, mes.getId(), dato);
-                        
-                        
-                        
+                        new DAO_RegistroTabla().insertRegistros(String.valueOf(idFlujo), String.valueOf(idTipo), nombreAccionReplace, mes.getId(), result);
                         contMes++;
                     }
 
