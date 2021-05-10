@@ -4,6 +4,8 @@
     Author     : rivaa
 --%>
 
+<%@page import="dao.DAO_RegistroTabla"%>
+<%@page import="model.registroDatosFlujo"%>
 <%@page import="model.Flujo"%>
 <%@page import="dao.DAO_Flujo"%>
 <%@page import="java.util.List"%>
@@ -12,6 +14,7 @@
 <%@page import="dao.Dao_privilegio"%>
 <%@page import="model.Privilegio"%>
 <%@page import="model.Usuario"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%
@@ -20,6 +23,7 @@
 
     DAO_Mes dao_mes = new DAO_Mes();
     DAO_Flujo dao_flujo = new DAO_Flujo();
+    DAO_RegistroTabla dao_registro = new DAO_RegistroTabla();
 
     List<Mes> lista = dao_mes.read();
     List<Flujo> listaFlujo = dao_flujo.getFlujoUsuario(u.getId());
@@ -27,6 +31,12 @@
     //int idFlujoRequest = Integer.parseInt(request.getParameter("idFlujo"));
     //Flujo flujo = dao_flujo.getFlujo(idFlujoRequest);
     int idFlujo = 1;
+
+    List<registroDatosFlujo> listaRegistro = dao_registro.getRegistrosIngresoPorId(idFlujo);
+    if (listaRegistro.isEmpty()) {
+        listaRegistro = null;
+    }
+
     int idTipo = 1;
 
     int mesInicial = -1;
@@ -53,6 +63,75 @@
     </head>
 
     <body>
+        <% if (listaRegistro != null) { %>
+
+        <div class="container">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="tablaFinanzas">
+                    <thead class="thead-dark">
+                        <tr id="columnaTabla">
+                            <th>Ingresos</th>
+                                <%
+                                    /*for (int idx = 0; idx < listaRegistro.size(); idx++) {
+                                            Mes mes = dao_mes.getMesPorId(listaRegistro.get(idx).getIdMes());
+                                            out.println("<th>"+mes.getNombre()+"</th>");
+                                            out.println("<tr>");
+                                            out.println("<td class=td><input type=text class=form-control value='"+listaRegistro.get(idx).getAccion()+"'></td>");
+                                            out.println("<td class=td><input type=text class=form-control value='"+listaRegistro.get(idx).getDato()+"'></td>");
+                                            out.println("</tr>");
+                                        }*/
+
+                                    List<String> listaAccion = dao_registro.getAccion(idFlujo, idTipo);
+                                    List<String> listaMeses = dao_registro.getMes(idFlujo);
+                                    List<String> listaDatos = new ArrayList();
+
+                                    for (int i = 0; i < listaMeses.size(); i++) {
+                                        Mes mes = dao_mes.getMesPorId(listaRegistro.get(i).getIdMes());
+                                        listaDatos = dao_registro.getDato(listaRegistro.get(i).getAccion());
+                                        out.println("<th>" + mes.getNombre() + "</th>");
+
+                                        for (String accion : listaAccion) {
+                                            out.println("<tr>");
+                                            out.println("<td class=td><input type=text class=form-control value='" + accion + "'></td>");
+                                            
+                                            for (String dato : listaDatos) {
+                                                out.println("<td class=td><input type=text class=form-control value='" + dato + "'></td>");
+                                                out.println("</tr>");
+                                            }
+                                        }
+                                    }
+
+                                %>
+                        </tr>
+                    </thead>
+                    <%                        for (registroDatosFlujo x : listaRegistro) {
+                            out.println("<tr>");
+                            out.println("<td class=td><input type=text class=form-control value='" + x.getAccion() + "'></td>");
+                            out.println("<td class=td><input type=text class=form-control value='" + x.getDato() + "'></td>");
+                            out.println("</tr>");
+
+                            System.out.println("elemento lista: " + x.getIdMes());
+                            System.out.println("elemento lista: " + x.getAccion());
+                            System.out.println("elemento lista: " + x.getDato());
+                        }
+                    %>
+
+
+                </table>
+                <div class="">
+                    <button type="button" class="btn btn-success" onclick="agregarFila()">Agregar fila</button>
+                    <button type="button" class="btn btn-danger" onclick="eliminarFila()">Eliminar fila</button>
+                    <button type="button" class="btn btn-success" onclick="agregarColumna()">Agregar columna</button>
+                    <button type="button" class="btn btn-danger" onclick="eliminarColumna()">Eliminar columna</button>
+                </div>
+            </div>
+            <br>
+            <hr>
+            <button type="button" class="btn btn-success" id="guardarCambios" onclick="guardarCambios()">Guardar avance</button> 
+        </div>
+
+        <% } else {%>
+
         <div class="container">
             <div class="table-responsive">
                 <table class="table table-bordered" id="tablaFinanzas">
@@ -80,7 +159,9 @@
             <br>
             <hr>
             <button type="button" class="btn btn-success" id="guardarCambios" onclick="guardarCambios()">Guardar avance</button> 
-        </div>
+        </div> 
+
+        <%}%>
 
         <div>
             <%
@@ -214,7 +295,7 @@
                     columna.append('<td><input type="text" readonly="true" class="form-control"></td>');
                 }
             });
-            
+
             acumulador = acumulador + 1;
         }
 
@@ -264,13 +345,17 @@
                 datos.push(dato);
             });
 
-            
+
             for (var i = 1; i < datos.length; i++) {
                 console.log(datos[i]);
                 console.log(atributos[i]);
             }
-            
-            <%  if(mesInicial == -1){mesInicial=1;}  %>
+
+        <%
+            if (mesInicial == -1) {
+                mesInicial = 1;
+            }
+        %>
 
             $.ajax({
                 url: "registroAccion.do",
@@ -279,10 +364,10 @@
                     datos: JSON.stringify(datos),
                     "idTipo": <%= idTipo%>,
                     "idFlujo": <%= idFlujo%>,
-                    idPrimermes : <%= mesInicial %>
+                    idPrimermes: <%= mesInicial%>
                 }
             }).done(function (response) {
-            
+
             });
 
         }

@@ -92,5 +92,8 @@ CREATE TABLE registroDatosFlujo(
     dato VARCHAR(10)
 );
 
-
+-- SELECT * FROM registroDatosFlujo WHERE idFlujo = 1;
+-- SELECT accion from registroDatosFlujo where idFlujo = 1 AND idtipo = 1 group by accion;
+-- SELECT dato from registroDatosFlujo where idFlujo = 1 AND accion = 'a';
+-- SELECT idMes from registroDatosFlujo where idFlujo = 1 group by idMes; 
 -- select * from registroDatosFlujo;
