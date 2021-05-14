@@ -92,8 +92,16 @@ CREATE TABLE registroDatosFlujo(
     dato VARCHAR(10)
 );
 
+delete from flujo;
+delete from registroDatosFlujo;
+
+select accion, dato, (select nombre from mes where id = idMes) 
+from registroDatosFlujo where idFlujo = 1 group by accion;
+
+
 -- SELECT * FROM registroDatosFlujo WHERE idFlujo = 1;
 -- SELECT accion from registroDatosFlujo where idFlujo = 1 AND idtipo = 1 group by accion;
--- SELECT dato from registroDatosFlujo where idFlujo = 1 AND accion = 'a';
+-- SELECT dato from registroDatosFlujo where idFlujo = 1 AND accion = 'sueldo';
 -- SELECT idMes from registroDatosFlujo where idFlujo = 1 group by idMes; 
 -- select * from registroDatosFlujo;
+

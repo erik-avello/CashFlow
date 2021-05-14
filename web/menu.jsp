@@ -41,6 +41,7 @@
 
     int mesInicial = -1;
     int acumulador = 1;
+
     try {
         if (request.getParameter("mesInicial") != null) {
             mesInicial = Integer.parseInt(request.getParameter("mesInicial"));
@@ -72,48 +73,41 @@
                         <tr id="columnaTabla">
                             <th>Ingresos</th>
                                 <%
-                                    /*for (int idx = 0; idx < listaRegistro.size(); idx++) {
-                                            Mes mes = dao_mes.getMesPorId(listaRegistro.get(idx).getIdMes());
-                                            out.println("<th>"+mes.getNombre()+"</th>");
-                                            out.println("<tr>");
-                                            out.println("<td class=td><input type=text class=form-control value='"+listaRegistro.get(idx).getAccion()+"'></td>");
-                                            out.println("<td class=td><input type=text class=form-control value='"+listaRegistro.get(idx).getDato()+"'></td>");
-                                            out.println("</tr>");
-                                        }*/
-
-                                    List<String> listaAccion = dao_registro.getAccion(idFlujo, idTipo);
-                                    List<String> listaMeses = dao_registro.getMes(idFlujo);
-                                    List<String> listaDatos = new ArrayList();
-
-                                    for (int i = 0; i < listaMeses.size(); i++) {
-                                        Mes mes = dao_mes.getMesPorId(listaRegistro.get(i).getIdMes());
-                                        listaDatos = dao_registro.getDato(listaRegistro.get(i).getAccion());
-                                        out.println("<th>" + mes.getNombre() + "</th>");
-
-                                        for (String accion : listaAccion) {
-                                            out.println("<tr>");
-                                            out.println("<td class=td><input type=text class=form-control value='" + accion + "'></td>");
-                                            
-                                            for (String dato : listaDatos) {
-                                                out.println("<td class=td><input type=text class=form-control value='" + dato + "'></td>");
-                                                out.println("</tr>");
+                                    String accionRepetidaTitlle = "";
+                                    for (int i = 0; i < listaRegistro.size(); i++) {
+                                        accionRepetidaTitlle = listaRegistro.get(i).getAccion();
+                                        
+                                        for (int j = 0; j < listaRegistro.size(); j++) {
+                                            if (accionRepetidaTitlle.equals(listaRegistro.get(j).getAccion())) {
+                                                out.print("<th>"+dao_mes.getMesPorId(j+1).getNombre()+"</th>");
+                                                i++;
                                             }
                                         }
+                                        break;
                                     }
+                                    
+                                    String accion = "";
 
+                                    int accionRepetida = 0;
+
+                                    for (int i = 0; i < listaRegistro.size(); i++) {
+                                        accion = listaRegistro.get(i).getAccion();
+                                        accionRepetida = 0;
+                                        out.println("<tr>");
+                                        out.println("<td class=td><input type=text class=form-control value='" + accion + "'></td>");
+                                        for (int j = 0; j < listaRegistro.size(); j++) {
+                                            if (accion.equals(listaRegistro.get(j).getAccion())) {
+                                                out.println("<td class=td><input type=text class=form-control value='" + listaRegistro.get(j).getDato() + "'></td>");
+                                                i++;
+                                                accionRepetida++;
+                                            }
+                                        }
+                                        out.println("</tr>");
+                                    }
                                 %>
                         </tr>
                     </thead>
-                    <%                        for (registroDatosFlujo x : listaRegistro) {
-                            out.println("<tr>");
-                            out.println("<td class=td><input type=text class=form-control value='" + x.getAccion() + "'></td>");
-                            out.println("<td class=td><input type=text class=form-control value='" + x.getDato() + "'></td>");
-                            out.println("</tr>");
-
-                            System.out.println("elemento lista: " + x.getIdMes());
-                            System.out.println("elemento lista: " + x.getAccion());
-                            System.out.println("elemento lista: " + x.getDato());
-                        }
+                    <%
                     %>
 
 
