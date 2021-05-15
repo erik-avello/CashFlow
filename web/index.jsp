@@ -9,15 +9,27 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link rel="stylesheet" href="Style/cssIndex.css"
+
     </head>
     <body>
-        <h1>Iniciar Sesion</h1>
-        <form action="Validate.do" method="post">
-            <input type="text" name="rut" placeholder="Rut: ">
-            <input type="password" name="pass" placeholder="Pass: ">
-            <input type="submit" name="btniniciar" value="Iniciar Sesion ">
+
+
+       
+        <form id="form" action="Validate.do" method="post">
+            <div class="form">
+            <h1>Iniciar Sesion</h1>
+            <div class="grupo">
+                <input  type="text" name="rut" placeholder="Rut: ">
+            
+            </div>
+                        
+            <div class="grupo">
+                <input  type="password" name="pass" placeholder="Password: ">
+            
+                <input  class="button" type="submit" name="btniniciar" value="Iniciar Sesion ">
             
         </form>
-    </body>
+    </div
+</body>
 </html>
